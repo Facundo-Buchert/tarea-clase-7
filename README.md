@@ -1,2 +1,0 @@
-# tarea-clase-7
- 
