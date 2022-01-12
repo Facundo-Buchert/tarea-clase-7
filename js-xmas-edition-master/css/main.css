@@ -18,6 +18,12 @@ a {
   white-space: nowrap;
   padding: 10px 15px;
 }
+
+.mistake {
+  margin: 2px solid (red);
+}
+
+
 header, footer {
   box-sizing: border-box;
   flex: 0 1 auto;
