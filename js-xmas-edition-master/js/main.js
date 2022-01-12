@@ -38,7 +38,16 @@ function validateTown (town) {
 
 function handleMistakes (mistakes){
     const keys = Object.keys(mistakes)
-    console.log(keys)
+
+    let numberOfErrors = 0 
+
+    if(document.querySelectorAll(".mistakeText").length > 0){
+        const $mistakeText = document.querySelectorAll(".mistakeText")
+        for(let i = 0; i < $mistakeText.length; i++){
+            $mistakeText[i].remove()
+        }
+
+    }
 
     keys.forEach(function(key){
         const mistake = mistakes[key]
@@ -46,34 +55,52 @@ function handleMistakes (mistakes){
 
         if(mistake){
             $form[key].className = "mistake"
+            numberOfErrors++
 
             const $mistake = document.createElement("li")
+            $mistake.className = "mistakeText"
             $mistake.innerText = mistake
             $mistakes.appendChild($mistake)
         }else{
             $form[key].className = ""
         }
-    
+        
     })
+   return numberOfErrors
+   
 }
 
 $form.onsubmit = function validateForm(event){
     const $name = $form.name.value
-    const city = $form.city.value
+    const town = $form.town.value
     const giftDescription = $form["gift-description"].value
 
     const mistakeName = validateName($name)
-    const mistakeCity = validateCity(city)
+    const mistakeTown = validateTown(town)
     const mistakeGiftDescription = validateGiftDescription(giftDescription)
 
     const mistakes = {
-        city: mistakeCity,
+        town: mistakeTown,
         name: mistakeName,
         "gift-description": mistakeGiftDescription
     }
 
 
-    handleMistakes(mistakes)
+    const isSuccess = handleMistakes(mistakes) === 0
+
+    if (isSuccess) {
+        $form.className = "hidden"
+        document.querySelector("#success").className = ""
+
+        setTimeout(function(){
+            window.location.href = "wishlist.html"
+        }, 5000)
+
+    } else {
+        document.querySelector("#success").className = "hidden"
+    }
+    
+
     event.preventDefault()
 }
 
